@@ -126,7 +126,8 @@ leaflet(semaforos) %>%
                                                  "<br>ObsS: ", OBSERVACAO, 
                                                  sep = ""),  
              weight = 1, radius=20, color= 'red', stroke = TRUE, fillOpacity = 0.8) %>% 
-  addCircles(~endpoints$LONGITUDE, ~endpoints$LATITUDE, weight = 1, radius=1, color= 'green', stroke = TRUE, fillOpacity = 0.8) %>% 
+  addCircles(~endpoints$LONGITUDE, ~endpoints$LATITUDE, weight = 1, radius=1, color= 'orange', stroke = TRUE, fillOpacity = 0.8) %>% 
+  addCircles(~dados$LONGITUDE, ~dados$LATITUDE, weight = 1, radius=1, color= 'black', stroke = TRUE, fillOpacity = 0.8) %>% 
   addHeatmap(group=dados$LOG1, lng=dados$LONGITUDE, lat=dados$LATITUDE, radius = 1 , max=10, blur = 25, intensity  =1) %>%
   addLegend("bottomright", colors= "#ffa500", labels="jULHO 2018", title="SEMÁFOROS:")
 ```
