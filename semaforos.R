@@ -37,14 +37,14 @@ pal <- colorFactor(
 leaflet(semaforos) %>%
   addTiles(group="OSM") %>%
   addCircles(~Longitude, ~Latitude, popup=~paste("ID: ", ID,  
-                                                 "<br>Local: ", LOG1, "N∫: ", PREDIAL,  
+                                                 "<br>Local: ", LOG1, "N¬∫: ", PREDIAL,  
                                                  "<br>Tipo: ", TIPO, 
                                                  "<br>ObsS: ", OBSERVACAO, 
                                                  sep = ""),  
              weight = 1, radius=20, color= 'red', stroke = TRUE, fillOpacity = 0.8) %>% 
   addCircles(~endpoints$LONGITUDE, ~endpoints$LATITUDE, weight = 1, radius=8, color= 'green', stroke = TRUE, fillOpacity = 0.8) %>% 
-  addHeatmap(group=dados2$LOG1, lng=dados2$LONGITUDE, lat=dados2$LATITUDE, radius = 10 , max=10, blur = 10, intensity  =1) %>%
-  addLegend("bottomright", colors= "#ffa500", labels="jULHO 2018", title="SEM¡FOROS:")
+  #addHeatmap(group=dados2$LOG1, lng=dados2$LONGITUDE, lat=dados2$LATITUDE, radius = 10 , max=10, blur = 10, intensity  =1) %>%
+  addLegend("bottomright", colors= "#ffa500", labels="jULHO 2018", title="SEM√ÅFOROS:")
 
 
 
@@ -67,12 +67,12 @@ leaflet(semaforos) %>%
   addTiles(group="OSM") %>%
   addHeatmap(group=dados2$LOG1, lng=dados2$LONGITUDE, lat=dados2$LATITUDE, radius = 10 , max=30, blur = 10, intensity  =1) %>%
   addCircles(~Longitude, ~Latitude, popup=~paste("ID: ", ID,  
-                                                 "<br>Local: ", LOG1, "N∫: ", PREDIAL,  
+                                                 "<br>Local: ", LOG1, "N¬∫: ", PREDIAL,  
                                                  "<br>Tipo: ", TIPO, 
                                                  "<br>ObsS: ", OBSERVACAO, 
                                                  sep = ""),  
              weight = 1, radius=20, color= ~pal(TIPO), stroke = TRUE, fillOpacity = 0.8) %>% 
-  addLegend("bottomright", colors= "#ffa500", labels="jULHO 2018", title="SEM¡FOROS:")
+  addLegend("bottomright", colors= "#ffa500", labels="jULHO 2018", title="SEM√ÅFOROS:")
 
 
 
@@ -86,7 +86,7 @@ leaflet(semaforos) %>%
   addTiles(group="OSM") %>%
   addCircles(~Longitude, ~Latitude, popup=~paste("ID: ", ID,  "<br>Local: ", CDL1,  "<br>Tipo: ", TIPO,   sep = " "),  
              weight = 1, radius=20, color= ~pal2(TIPO), stroke = TRUE, fillOpacity = 0.8) %>% 
-  addLegend("bottomright", colors= "#ffa500", labels="jULHO 2018", title="SEM¡FOROS:")
+  addLegend("bottomright", colors= "#ffa500", labels="jULHO 2018", title="SEM√ÅFOROS:")
 
 
 
