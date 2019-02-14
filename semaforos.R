@@ -14,7 +14,7 @@ semaforos = read.csv('semaforos_jul18.csv', header = TRUE, sep = ";")
 head(semaforos, 10)
 class(semaforos$Longitude)
 
-endpoints = read.csv('/Users/fsmoura/Documents/R-files/endpoints.csv', header = TRUE, sep = ";")
+endpoints = read.csv('/Users/fsmoura/Documents/R-files/semaforos/endpoints.csv', header = TRUE, sep = ";")
 head(endpoints, 10)
 sub( '(?<=.{3})', '.', endpoints$LONGITUDE[1], perl=TRUE )
 endpoints$LONGITUDE = sub( '(?<=.{3})', '.', endpoints$LONGITUDE, perl=TRUE )
