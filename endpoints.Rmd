@@ -1,3 +1,72 @@
+---
+title: "Endpoins, semáforos e heatmap de acidentes de 2013 a 2017"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r}
+
+setwd("/Users/fsmoura/Desktop/docs/")
+data13 = read.csv("acidentes-2013.csv", header = TRUE, sep = ";")
+data13$LATITUDE <- data13$LATITUDE - 0.0009
+names(data13)
+data13$DATA_HORA = NULL
+data13 = data13[,sort(names(data13))]
+dim(data13)
+data14 = read.csv("acidentes-2014.csv", header = TRUE, sep = ";")
+data14$LATITUDE <- data14$LATITUDE - 0.0009
+names(data14)
+dim(data14)
+data14$DATA_HORA = NULL
+data14$DATA = NULL
+data14$HORA = NULL
+dim(data14)
+data14 = data14[,sort(names(data14))]
+data15 = read.csv("acidentes-2015.csv", header = TRUE, sep = ";")
+data15$LATITUDE <- data15$LATITUDE - 0.0009
+names(data15)
+dim(data15)
+data15$DATA_HORA = NULL
+data15$DATA = NULL
+data15$HORA = NULL
+dim(data15)
+data15 = data15[,sort(names(data15))]
+data16 = read.csv("acidentes-2016.csv", header = TRUE, sep = ";")
+data16$LATITUDE <- data16$LATITUDE - 0.0009
+names(data16)
+dim(data16)
+data16$DATA_HORA = NULL
+data16$DATA = NULL
+data16$HORA = NULL
+dim(data16)
+data16 = data16[,sort(names(data16))]
+data17 = read.csv("acidentes-2017.csv", header = TRUE, sep = ";")
+names(data17)
+dim(data17)
+data17$DATA = NULL
+data17$HORA = NULL
+dim(data17)
+data17 = data17[,sort(names(data17))]
+
+final = rbind(data13, data14, data15, data16, data17)
+data = final
+names(data)
+dim(data)
+data = data[complete.cases(data$LATITUDE), ]
+data = data[complete.cases(data$LONGITUDE), ]
+dim(data)
+dados <- data
+##Filtro
+dim(dados)
+dados <- dados[dados$LONGITUDE < -48.21880, ]
+dim(dados)
+dados <- dados[dados$LATITUDE > -31.0391003, ]
+dim(dados)
+```
+
+
+```{r}
 library(ggplot2)
 library(ggthemes)
 library(viridis) # devtools::install_github("sjmgarnier/viridis)
@@ -7,15 +76,18 @@ library(grid)
 library(dplyr)
 library(gridExtra)
 library(leaflet.extras)
-
 # rodar mapa_acidentes.R
+```
 
+```{r}
 setwd('/Users/fsmoura/Documents/R-files/semaforos/')
 list.files()
 semaforos = read.csv('semaforos_jul18.csv', header = TRUE, sep = ";")
 head(semaforos, 10)
 class(semaforos$Longitude)
+```
 
+```{r}
 endpoints = read.csv('/Users/fsmoura/Documents/R-files/semaforos/endpoints.csv', header = TRUE, sep = ";")
 head(endpoints, 10)
 sub( '(?<=.{3})', '.', endpoints$LONGITUDE[1], perl=TRUE )
@@ -25,7 +97,10 @@ head(endpoints)
 class(endpoints$LONGITUDE)
 endpoints$LONGITUDE = as.numeric(as.character(endpoints$LONGITUDE))
 endpoints$LATITUDE = as.numeric(as.character(endpoints$LATITUDE))
+```
 
+
+```{r}
 library(wesanderson)
 
 pal <- colorFactor(
@@ -33,9 +108,16 @@ pal <- colorFactor(
   palette =  c("black", "yellow","Blue", "green","red"),
   domain = semaforos$TIPO
 )
+```
 
 
-#utilizando dados2 de mapa_acidentes.R
+```{r}
+head(dados)
+```
+
+
+```{r}
+#utilizando o dataset dados de mapa_acidentes.R
 leaflet(semaforos) %>%
   addTiles(group="OSM") %>%
   addCircles(~Longitude, ~Latitude, popup=~paste("ID: ", ID,  
@@ -44,14 +126,12 @@ leaflet(semaforos) %>%
                                                  "<br>ObsS: ", OBSERVACAO, 
                                                  sep = ""),  
              weight = 1, radius=20, color= 'red', stroke = TRUE, fillOpacity = 0.8) %>% 
-  addCircles(~endpoints$LONGITUDE, ~endpoints$LATITUDE, weight = 1, radius=2, color= 'green', stroke = TRUE, fillOpacity = 0.8) %>% 
-  addCircles(~dados$LONGITUDE, ~dados$LATITUDE, weight = 1, radius=1, color= 'black', stroke = TRUE, fillOpacity = 0.8) %>% 
-  addHeatmap(group=dados$LOG1, lng=dados$LONGITUDE, lat=dados$LATITUDE, radius = 10 , max=10, blur = 25, intensity  =1) %>%
+  addCircles(~endpoints$LONGITUDE, ~endpoints$LATITUDE, weight = 1, radius=1, color= 'green', stroke = TRUE, fillOpacity = 0.8) %>% 
+  addHeatmap(group=dados$LOG1, lng=dados$LONGITUDE, lat=dados$LATITUDE, radius = 1 , max=10, blur = 25, intensity  =1) %>%
   addLegend("bottomright", colors= "#ffa500", labels="jULHO 2018", title="SEMÁFOROS:")
+```
 
-
-
-
+```{r}
 #https://www.rdocumentation.org/packages/leaflet.extras/versions/0.2/topics/addHeatmap
 pal <- colorFactor(
   #palette = 'Darjeeling', #topo.colors(5),
@@ -71,10 +151,11 @@ leaflet(semaforos) %>%
                                                  sep = ""),  
              weight = 1, radius=20, color= ~pal(TIPO), stroke = TRUE, fillOpacity = 0.8) %>% 
   addLegend("bottomright", colors= "#ffa500", labels="jULHO 2018", title="SEMÁFOROS:")
+```
 
 
 
-
+```{r}
 pal2 <- colorFactor(
   palette = c('red', 'blue', 'green', 'orange'),
   domain = semaforos$TIPO
@@ -86,12 +167,15 @@ leaflet(semaforos) %>%
              weight = 1, radius=20, color= ~pal2(TIPO), stroke = TRUE, fillOpacity = 0.8) %>% 
   addLegend("bottomright", colors= "#ffa500", labels="jULHO 2018", title="SEMÁFOROS:")
 
+```
 
-
-#https://github.com/bhaskarvk/leaflet.extras/blob/master/inst/examples/search.R
+```{r}
 leaflet(semaforos) %>%
   addProviderTiles(providers$OpenStreetMap) %>%
   addWebGLHeatmap(lng = ~Longitude, lat = ~Latitude, size = 60) %>%
   addCircles(lng = ~Longitude, lat = ~Latitude, weight = 1, fillOpacity = 0.5,
            radius = 10, color= ~pal(TIPO), group = "cities")
+```
 
+
+end....
